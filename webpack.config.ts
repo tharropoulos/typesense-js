@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const path = require("path");
+import path from "path";
+import webpack from "webpack";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
-module.exports = (env, argv) => {
+const config = (env, argv: webpack.Configuration): webpack.Configuration => {
   return {
     entry: "./src/Typesense.ts",
     target: "web",
@@ -13,11 +15,21 @@ module.exports = (env, argv) => {
           test: /\.ts$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader",
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+            },
           },
         },
       ],
     },
+    plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          mode: "write-dts",
+        },
+      }),
+    ],
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
     },
@@ -31,3 +43,5 @@ module.exports = (env, argv) => {
     devtool: "source-map",
   };
 };
+
+export default config;
