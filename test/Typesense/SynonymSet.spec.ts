@@ -18,7 +18,7 @@ const typesense = new TypesenseClient({
 describe.skipIf(!(await isV30OrAbove(typesense)))("SynonymSet", function () {
   const testSynonymSetName = "test-synonym-set";
   const synonymSetData = {
-    synonyms: [
+    items: [
       {
         id: "dummy",
         synonyms: ["foo", "bar", "baz"],
@@ -51,8 +51,8 @@ describe.skipIf(!(await isV30OrAbove(typesense)))("SynonymSet", function () {
         .upsert(synonymSetData);
 
       expect(createResult).toBeDefined();
-      expect(createResult.synonyms[0].id).toBe("dummy");
-      expect(createResult.synonyms).toMatchObject(synonymSetData.synonyms);
+      expect(createResult.items[0].id).toBe("dummy");
+      expect(createResult.items).toMatchObject(synonymSetData.items);
     });
   });
 
@@ -65,10 +65,8 @@ describe.skipIf(!(await isV30OrAbove(typesense)))("SynonymSet", function () {
         .retrieve();
 
       expect(retrievedSynonymSet).toBeDefined();
-      expect(retrievedSynonymSet.synonyms[0].id).toBe("dummy");
-      expect(retrievedSynonymSet.synonyms).toMatchObject(
-        synonymSetData.synonyms,
-      );
+      expect(retrievedSynonymSet.items[0].id).toBe("dummy");
+      expect(retrievedSynonymSet.items).toMatchObject(synonymSetData.items);
     });
   });
 

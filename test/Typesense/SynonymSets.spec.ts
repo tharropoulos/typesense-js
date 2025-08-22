@@ -18,7 +18,7 @@ const typesense = new TypesenseClient({
 describe.skipIf(!(await isV30OrAbove(typesense)))("SynonymSets", function () {
   const testSynonymSetName = "test-synonym-set";
   const synonymSetData = {
-    synonyms: [
+    items: [
       {
         id: "dummy",
         synonyms: ["foo", "bar", "baz"],
@@ -59,9 +59,7 @@ describe.skipIf(!(await isV30OrAbove(typesense)))("SynonymSets", function () {
       );
 
       expect(createdSynonymSet).toBeDefined();
-      expect(createdSynonymSet?.synonyms).toMatchObject(
-        synonymSetData.synonyms,
-      );
+      expect(createdSynonymSet?.items).toMatchObject(synonymSetData.items);
     });
   });
 });
